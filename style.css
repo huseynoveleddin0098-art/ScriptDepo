@@ -23,3 +23,39 @@ body.light .ghost,body.light .filters button,body.light .quick button,body.light
 body.light .search,body.light .publish input,body.light .publish textarea,body.light .auth-box input,body.light .modal-box textarea{background:#fff;color:#151722}
 body.light .code{background:#f5f6fa;color:#30364a}
 @media(max-width:700px){.dash-grid{grid-template-columns:1fr}.wide-box{max-height:92vh}.auth-actions{gap:5px}.auth-actions .ghost{padding:8px 9px}.dash-row{align-items:flex-start;flex-direction:column}.dash-row>div:last-child{width:100%;display:flex;gap:6px}}
+
+/* ScriptDepo index-style redesign */
+body{background:#08090c;color:#e9eaf0}
+.top{height:64px;padding:0 max(22px,calc((100% - 1240px)/2));gap:28px;background:#08090cf2;border-bottom:1px solid #191b22}
+.logo{font-size:18px;letter-spacing:-.4px}.logo span{color:#8b5cf6}
+.top nav{gap:22px;font-size:13px}.top nav a{color:#969baa}.top nav a:hover{color:#fff}
+.auth-actions .ghost{font-size:12px;padding:8px 11px;background:#0e1015;border-color:#20232c}
+.hero{max-width:1240px;padding:92px 22px 58px;display:block;text-align:center}
+.hero-inner{max-width:850px;margin:auto}.pill{font-size:10px;letter-spacing:2px;color:#9a82ff}
+.hero h1{font-size:clamp(44px,7vw,76px);letter-spacing:-3px;line-height:1.02;margin:16px 0 18px}
+.hero h1 em{background:linear-gradient(90deg,#a78bfa,#6ea8ff);background-clip:text}
+.hero p{margin:0 auto;color:#858b9a;font-size:16px;max-width:650px;line-height:1.7}
+.search{max-width:720px;margin:28px auto 0;background:#101217;border:1px solid #292d38;border-radius:12px;padding:5px;box-shadow:0 16px 50px #0005}
+.search input{font-size:14px}.search button{border-radius:8px;padding:11px 18px}
+.quick{justify-content:center}.quick button{font-size:11px;border-radius:7px;padding:7px 10px;background:#0c0e13}
+section#categories,.community-strip,#scripts,.publish{max-width:1240px}
+.section-head{padding:0 22px;margin-bottom:18px}.section-head h2{font-size:25px;letter-spacing:-.7px}
+.section-note{color:#666d7b;font-size:11px}
+.cats{max-width:none;padding:0 22px;margin-bottom:65px;grid-template-columns:repeat(6,1fr);gap:10px}
+.cats button{min-height:58px;text-align:center;background:#0d0f14;border-color:#1d2029;font-size:12px;color:#aeb3c0;border-radius:10px}
+.cats button:hover{border-color:#40366b;background:#12111b;color:#fff}
+.community-strip{margin:0 auto 60px;padding:25px 22px;border-radius:13px;background:#0c0e13;border-color:#1c2029}
+.community-strip h2{font-size:24px}.community-points{gap:7px}.community-points span{font-size:11px;padding:9px 12px;background:#101218}
+.grid{max-width:none;padding:0 22px;margin-bottom:80px;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{position:relative;overflow:hidden;padding:0;border-radius:12px;background:#0d0f14;border-color:#1d2029}
+.card:before{content:"";display:block;height:105px;background:radial-gradient(circle at 20% 10%,#5b3fa5,transparent 45%),linear-gradient(135deg,#171325,#0b1019)}
+.card:hover{transform:translateY(-2px);border-color:#39304f;box-shadow:0 16px 40px #0005}
+.card-top,.card h3,.card .desc,.card .meta,.card .card-foot{margin-left:16px;margin-right:16px}
+.card-top{margin-top:-52px;position:relative}.icon{width:52px;height:52px;border:1px solid #3a3157;background:#171326;box-shadow:0 8px 22px #0008}
+.card h3{font-size:15px;margin-top:14px}.desc{font-size:12px;min-height:40px;color:#777e8e}
+.meta{margin-top:10px}.tag{font-size:10px;background:#171921;color:#8f96a7}
+.card-foot{padding:12px 0 14px;font-size:11px}.card-foot button{font-size:11px}
+.publish{margin:0 auto 75px;border-radius:13px;background:#0c0e13;padding:28px 22px}
+footer{padding:25px max(22px,calc((100% - 1240px)/2));font-size:11px}
+@media(max-width:900px){.cats{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.hero{padding-top:65px}.hero h1{letter-spacing:-2px}.cats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.top{padding:0 14px}.top nav{display:none}.auth-actions .ghost{font-size:10px;padding:7px 8px}.publish{margin-left:14px;margin-right:14px}}
