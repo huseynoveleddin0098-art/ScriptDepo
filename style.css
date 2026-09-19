@@ -59,3 +59,27 @@ section#categories,.community-strip,#scripts,.publish{max-width:1240px}
 footer{padding:25px max(22px,calc((100% - 1240px)/2));font-size:11px}
 @media(max-width:900px){.cats{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.hero{padding-top:65px}.hero h1{letter-spacing:-2px}.cats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.top{padding:0 14px}.top nav{display:none}.auth-actions .ghost{font-size:10px;padding:7px 8px}.publish{margin-left:14px;margin-right:14px}}
+
+/* Full index layout */
+.index-hero{max-width:1240px;margin:0 auto;padding:58px 22px 30px}
+.index-hero-inner{border-bottom:1px solid #1b1e27;padding-bottom:38px}
+.index-hero h1{font-size:42px;letter-spacing:-1.8px;margin:8px 0}
+.index-hero p{color:#858b99;margin:0 0 22px}
+.index-hero .search{margin:0;max-width:650px}
+.index-section{max-width:1240px;margin:0 auto;padding:30px 22px}
+.index-section .section-head{padding:0;margin-bottom:15px}
+.index-grid{padding:0;grid-template-columns:repeat(4,1fr);gap:14px;margin:0}
+.index-grid .card{min-width:0}
+.index-grid .card:before{height:120px;background:linear-gradient(135deg,#17131f,#111a27)}
+.index-grid .card h3{font-size:14px;line-height:1.35;min-height:38px}
+.trend-row{display:flex;gap:9px;overflow:auto;padding-bottom:5px}
+.trend-row button{flex:0 0 auto;background:#0e1015;border:1px solid #1e222b;color:#c5cad4;border-radius:9px;padding:12px 16px;cursor:pointer;font-weight:700;font-size:12px}
+.trend-row button:hover{border-color:#4b3b70;background:#15121e}
+.game-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.game-row button{min-height:92px;text-align:left;padding:16px;background:#0d0f14;border:1px solid #1d2029;color:#e7e9ee;border-radius:11px;cursor:pointer}
+.game-row button:hover{border-color:#45366a;transform:translateY(-2px)}
+.game-row b{display:block;font-size:13px}.game-row small{display:block;color:#6f7685;margin-top:8px}
+.community-strip{max-width:1196px;margin-top:18px;margin-bottom:18px}
+@media(max-width:1000px){.index-grid{grid-template-columns:repeat(3,1fr)}.game-row{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.index-hero{padding-top:35px}.index-hero h1{font-size:32px}.index-grid{grid-template-columns:repeat(2,1fr)}.game-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.index-grid{grid-template-columns:1fr}.game-row{grid-template-columns:1fr}}
