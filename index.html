@@ -1,14 +1,110 @@
 <!doctype html>
-<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ScriptDepo - Roblox script topluluğu"><title>ScriptDepo — Roblox Script Hub</title><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="ScriptDepo — Roblox script index, oyunlar ve topluluk.">
+<title>ScriptDepo — Roblox Script Index</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
 <body>
-<header class="top"><a class="logo" href="#"><span>⚡</span> ScriptDepo</a><nav><a href="#scripts">Scriptler</a><a href="#categories">Kategoriler</a><a href="#publish">Yayınla</a><a href="#community">Topluluk</a></nav><div class="auth-actions"><button id="myBtn" class="ghost hidden" onclick="openMy()">Panelim</button><button id="userBtn" class="ghost" onclick="openAuth()">Giriş / Kayıt</button><button id="adminBtn" class="ghost hidden" onclick="openAdmin()">Admin</button><button class="ghost" onclick="toggleTheme()">☼ Tema</button></div></header>
+<header class="top">
+  <a class="logo" href="#"><span>⚡</span> ScriptDepo</a>
+  <nav><a href="#scripts">Scriptler</a><a href="#trending">Trending</a><a href="#categories">Oyunlar</a><a href="#community">Topluluk</a><a href="#publish">Yayınla</a></nav>
+  <div class="auth-actions">
+    <button id="myBtn" class="ghost hidden" onclick="openMy()">Panelim</button>
+    <button id="userBtn" class="ghost" onclick="openAuth()">Giriş / Kayıt</button>
+    <button id="adminBtn" class="ghost hidden" onclick="openAdmin()">Admin</button>
+    <button class="ghost theme-btn" onclick="toggleTheme()">☼</button>
+  </div>
+</header>
+
 <main>
-<section class="index-hero"><div class="index-hero-inner"><span class="eyebrow">SCRIPTDEPO</span><h1>Roblox Script Index</h1><p>Yeni scriptleri keşfet, oyunlara göz at ve favori içeriklerini kaydet.</p><div class="search"><span>⌕</span><input id="search" placeholder="Script, oyun veya etiket ara..." oninput="render()"><button onclick="document.getElementById('scripts').scrollIntoView({behavior:'smooth'})">Ara</button></div></div></section>
-<section id="scripts" class="index-section"><div class="section-head"><div><span class="eyebrow">YENİ EKLENENLER</span><h2>Newest</h2></div><div class="filters"><button class="active" onclick="setSort('new',this)">Yeni</button><button onclick="setSort('popular',this)">Popüler</button><button onclick="setSort('views',this)">Çok Görüntülenen</button></div></div><div id="grid" class="grid index-grid"></div></section>
-<section class="index-section"><div class="section-head"><div><span class="eyebrow">TREND</span><h2>Trending</h2></div></div><div class="trend-row"><button onclick="setFilter('Blox Fruits')">🔥 Blox Fruits</button><button onclick="setFilter('MM2')">🔪 MM2</button><button onclick="setFilter('Universal')">⚡ Universal</button><button onclick="setFilter('Brookhaven')">🏙️ Brookhaven</button><button onclick="setFilter('Blade Ball')">⚔️ Blade Ball</button><button onclick="setFilter('Adopt Me')">🐾 Adopt Me</button></div></section>
-<section id="community" class="index-section community-strip"><div><span class="eyebrow">SCRIPTDEPO TOPLULUK</span><h2>Script paylaş, keşfet ve favorile.</h2><p>Topluluk tarafından gönderilen içerikleri tek yerde bul.</p></div><div class="community-points"><span>♥ Beğeni</span><span>★ Favori</span><span>💬 Yorum</span></div></section>
-<section id="categories" class="index-section"><div class="section-head"><div><span class="eyebrow">ROBLOX</span><h2>Popular Games</h2></div></div><div class="game-row"><button onclick="setFilter('Blox Fruits')"><b>Blox Fruits</b><small>Scriptler</small></button><button onclick="setFilter('MM2')"><b>Murder Mystery 2</b><small>Scriptler</small></button><button onclick="setFilter('Brookhaven')"><b>Brookhaven</b><small>Scriptler</small></button><button onclick="setFilter('Blade Ball')"><b>Blade Ball</b><small>Scriptler</small></button><button onclick="setFilter('Adopt Me')"><b>Adopt Me</b><small>Scriptler</small></button></div></section>
-<section id="publish" class="publish"><div><span class="eyebrow">TOPLULUĞA KATIL</span><h2>Scriptini paylaş.</h2><p>Scriptini ekle, açıklama ve kaynak bağlantısını belirt.</p></div><form onsubmit="publish(event)"><input id="pTitle" required placeholder="Script adı"><input id="pGame" required placeholder="Oyun adı"><input id="pTags" placeholder="Etiketler (virgülle ayır)"><textarea id="pCode" required placeholder="Script kodu veya kaynak bağlantısı"></textarea><button class="primary">Scripti Yayınla →</button></form></section>
-<section id="auth" class="modal"><div class="modal-box auth-box"><button class="close" onclick="hideAuth()">×</button><span class="eyebrow">HESABIN</span><h2 id="authTitle">Giriş yap</h2><form onsubmit="submitAuth(event)"><input id="authEmail" type="email" required placeholder="E-posta"><input id="authPassword" type="password" required minlength="6" placeholder="Şifre"><input id="authName" class="hidden" placeholder="Kullanıcı adı"><button class="primary" id="authSubmit">Giriş Yap</button></form><button class="text-btn" onclick="toggleAuthMode()">Hesabın yok mu? Kayıt ol</button><p id="authStatus" class="desc"></p></div></section><section id="admin" class="modal"><div class="modal-box wide-box"><button class="close" onclick="hideAdmin()">×</button><span class="eyebrow">YÖNETİM</span><h2>Admin Paneli</h2><div class="admin-tabs"><button class="ghost" onclick="renderAdmin(&quot;scripts&quot;)">Scriptler</button><button class="ghost" onclick="renderAdmin(&quot;reports&quot;)">Raporlar</button><button class="ghost" onclick="renderAdmin(&quot;users&quot;)">Kullanıcılar</button></div><div id="adminContent">Yükleniyor...</div></div></section><section id="profileModal" class="modal"><div class="modal-box auth-box"><button class="close" onclick="hideProfile()">×</button><span class="eyebrow">PROFİL</span><h2>Hesabını düzenle</h2><form onsubmit="saveProfile(event)"><input id="profileName" required maxlength="60" placeholder="Kullanıcı adı"><input id="profileEmail" disabled placeholder="E-posta"><div id="profileRole" class="role-badge">USER</div><button class="primary">Kaydet</button></form><button class="text-btn" onclick="logout()">Çıkış yap</button></div></section><section id="myModal" class="modal"><div class="modal-box wide-box"><button class="close" onclick="hideMy()">×</button><span class="eyebrow">HESABIM</span><h2>Panelim</h2><div id="myContent"></div></div></section></main><footer><b>⚡ ScriptDepo</b><span>Topluluk script arşivi</span><span>© 2026 ScriptDepo</span></footer>
-<div id="modal" class="modal" onclick="closeModal(event)"><div class="modal-box" id="modalBox"></div></div>
-<script src="app.js"></script></body></html>
+<section class="index-hero">
+  <div class="hero-copy">
+    <span class="eyebrow">SCRIPTDEPO • ROBLOX SCRIPT INDEX</span>
+    <h1>Roblox scriptlerini <em>tek yerde</em> keşfet.</h1>
+    <p>Oyununa göre ara, özellikleri karşılaştır, script detaylarını aç ve topluluk içeriklerini kaydet.</p>
+    <div class="search"><span>⌕</span><input id="search" placeholder="Script, oyun, özellik veya etiket ara..." oninput="render()"><button onclick="focusScripts()">Ara</button></div>
+    <div class="hero-links">
+      <button onclick="setSort('new',document.querySelector('.filter-new'))">Yeni eklenenler</button>
+      <button onclick="setSort('popular',document.querySelector('.filter-popular'))">En popüler</button>
+      <button onclick="setSort('views',document.querySelector('.filter-views'))">Çok görüntülenen</button>
+    </div>
+  </div>
+</section>
+
+<section class="index-section stats-strip">
+  <div><b id="statScripts">0</b><span>Script</span></div>
+  <div><b id="statGames">0</b><span>Oyun</span></div>
+  <div><b id="statViews">0</b><span>Görüntülenme</span></div>
+  <div><b id="statLikes">0</b><span>Beğeni</span></div>
+</section>
+
+<section id="scripts" class="index-section">
+  <div class="section-head">
+    <div><span class="eyebrow">SCRIPT ARŞİVİ</span><h2 id="sectionTitle">Newest</h2></div>
+    <div class="filters">
+      <button class="active filter-new" onclick="setSort('new',this)">Yeni</button>
+      <button class="filter-popular" onclick="setSort('popular',this)">Popüler</button>
+      <button class="filter-views" onclick="setSort('views',this)">Görüntülenme</button>
+    </div>
+  </div>
+  <div class="archive-toolbar">
+    <select id="gameFilter" onchange="filterByGame(this.value)">
+      <option value="">Tüm oyunlar</option>
+    </select>
+    <select id="tagFilter" onchange="filterByTag(this.value)">
+      <option value="">Tüm özellikler</option>
+    </select>
+    <button class="ghost clear-filter" onclick="clearFilters()">Filtreleri temizle</button>
+  </div>
+  <div id="grid" class="grid index-grid"></div>
+</section>
+
+<section id="trending" class="index-section">
+  <div class="section-head"><div><span class="eyebrow">TRENDING</span><h2>Şu an popüler</h2></div><button class="ghost" onclick="setSort('popular',document.querySelector('.filter-popular'))">Tümünü gör →</button></div>
+  <div id="trendingGrid" class="mini-grid"></div>
+</section>
+
+<section class="index-section">
+  <div class="section-head"><div><span class="eyebrow">ÖNERİLEN</span><h2>Topluluk seçkisi</h2></div></div>
+  <div id="recommendedGrid" class="mini-grid"></div>
+</section>
+
+<section class="index-section">
+  <div class="section-head"><div><span class="eyebrow">MOST LIKED</span><h2>En çok beğenilenler</h2></div></div>
+  <div id="likedGrid" class="mini-grid"></div>
+</section>
+
+<section id="categories" class="index-section">
+  <div class="section-head"><div><span class="eyebrow">ROBLOX</span><h2>Popular Games</h2></div></div>
+  <div id="gameRow" class="game-row"></div>
+</section>
+
+<section id="community" class="index-section community-strip">
+  <div><span class="eyebrow">SCRIPTDEPO TOPLULUK</span><h2>Scriptini paylaş, keşfet, favorile.</h2><p>Üyeler içerik gönderir; admin onayından sonra arşive eklenir.</p></div>
+  <div class="community-points"><span>♥ Beğeni</span><span>★ Favori</span><span>💬 Yorum</span><span>⚑ Rapor</span></div>
+</section>
+
+<section id="publish" class="publish">
+  <div><span class="eyebrow">TOPLULUĞA KATIL</span><h2>Yeni bir script ekle.</h2><p>Başlık, oyun, etiketler ve kodu gir. Gönderin admin onayına düşer.</p></div>
+  <form onsubmit="publish(event)">
+    <div class="form-grid"><input id="pTitle" required maxlength="120" placeholder="Script adı"><input id="pGame" required maxlength="80" placeholder="Oyun adı"></div>
+    <input id="pTags" maxlength="300" placeholder="Etiketler — örn: Keyless, Mobile, ESP">
+    <textarea id="pDesc" maxlength="1000" placeholder="Kısa açıklama"></textarea>
+    <textarea id="pCode" required placeholder="Script kodu"></textarea>
+    <input id="pSource" type="url" placeholder="Kaynak URL (opsiyonel)">
+    <button class="primary">Scripti Gönder →</button>
+  </form>
+</section>
+
+<section id="auth" class="modal"><div class="modal-box auth-box"><button class="close" onclick="hideAuth()">×</button><span class="eyebrow">HESABIN</span><h2 id="authTitle">Giriş yap</h2><form onsubmit="submitAuth(event)"><input id="authEmail" type="email" required placeholder="E-posta"><input id="authPassword" type="password" required minlength="6" placeholder="Şifre"><input id="authName" class="hidden" maxlength="60" placeholder="Kullanıcı adı"><button class="primary" id="authSubmit">Giriş Yap</button></form><button class="text-btn" onclick="toggleAuthMode()">Hesabın yok mu? Kayıt ol</button><p id="authStatus" class="desc"></p></div></section>
+<section id="admin" class="modal"><div class="modal-box wide-box"><button class="close" onclick="hideAdmin()">×</button><span class="eyebrow">YÖNETİM</span><h2>Admin Paneli</h2><div class="admin-tabs"><button class="ghost" onclick="renderAdmin('scripts')">Scriptler</button><button class="ghost" onclick="renderAdmin('reports')">Raporlar</button><button class="ghost" onclick="renderAdmin('users')">Kullanıcılar</button></div><div id="adminContent"></div></div></section>
+<section id="profileModal" class="modal"><div class="modal-box auth-box"><button class="close" onclick="hideProfile()">×</button><span class="eyebrow">PROFİL</span><h2>Hesabını düzenle</h2><form onsubmit="saveProfile(event)"><input id="profileName" required maxlength="60" placeholder="Kullanıcı adı"><input id="profileEmail" disabled placeholder="E-posta"><div id="profileRole" class="role-badge">USER</div><button class="primary">Kaydet</button></form><button class="text-btn" onclick="logout()">Çıkış yap</button></div></section>
+<section id="myModal" class="modal"><div class="modal-box wide-box"><button class="close" onclick="hideMy()">×</button><span class="eyebrow">HESABIM</span><h2>Panelim</h2><div id="myContent"></div></div></section>
+</main>
+<footer><b>⚡ ScriptDepo</b><span>Roblox script topluluk arşivi</span><span>© 2026 ScriptDepo</span></footer>
+<div id="modal" class="modal" onclick="closeModal(event)"><div class="modal-box detail-box" id="modalBox"></div></div>
+<script src="app.js"></script>
+</body></html>
