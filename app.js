@@ -135,6 +135,7 @@ async function loadDB(){
 function updateUser(){
  const name=profile?.display_name||user?.email||"Giriş / Kayıt";
  userBtn.textContent=user?name:"Giriş / Kayıt";
+ userBtn.onclick=user?openProfile:openAuth;
  userBtn.classList.toggle("logged",!!user);
  adminBtn.classList.toggle("hidden",profile?.role!=="admin"&&profile?.role!=="moderator");
  myBtn.classList.toggle("hidden",!user);
