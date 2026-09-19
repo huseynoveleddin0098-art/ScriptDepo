@@ -9,3 +9,72 @@ function setFilter(x){filter=x;document.getElementById("search").value=x;documen
 function setSort(x,b){sort=x;document.querySelectorAll(".filters button").forEach(y=>y.classList.remove("active"));b.classList.add("active");render()}
 function publish(e){e.preventDefault();let s={id:Date.now(),title:pTitle.value,game:pGame.value,tags:pTags.value.split(",").map(x=>x.trim()).filter(Boolean),author:"Sen",views:0,likes:0,verified:false,desc:"Topluluk tarafından yeni gönderildi.",code:pCode.value};scripts.unshift(s);localStorage.setItem("scriptdepo-scripts",JSON.stringify(scripts));e.target.reset();render();alert("Script başarıyla yerel demoya eklendi!")}
 function toggleTheme(){document.body.classList.toggle("light")}function fmt(n){return n>=1000?(n/1000).toFixed(1)+"K":n}function esc(x){return String(x).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}render();
+const SUPABASE_URL = "https://jjwqdvjtcorzpvxlfnog.supabase.co";
+const SUPABASE_KEY = "sb_publishable_J4NQfjyOIj_sMUA53iSnVA_inPdNLZ7";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let currentUser = null, authMode = "login";
+
+async function initScriptDepo(){
+  const session = await supabaseClient.auth.getSession();
+  currentUser = session.data.session?.user || null;
+  updateAuthUI();
+  await loadScriptsFromDB();
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    currentUser = session?.user || null;
+    updateAuthUI();
+  });
+}
+async function loadScriptsFromDB(){
+  const r = await supabaseClient.from("scripts").select("*").order("likes",{ascending:false});
+  if(r.error) return render();
+  scripts = r.data.map(s => ({id:s.id,title:s.title,game:s.game_name,tags:s.tags||[],author:s.author_id,views:s.views||0,likes:s.likes||0,verified:s.status==="approved",desc:s.description||"",code:s.script_content||s.source_url||""}));
+  render();
+}
+function updateAuthUI(){
+  const b=document.getElementById("adminBtn");
+  if(b) b.classList.toggle("hidden", currentUser?.email?.toLowerCase() !== "mm2ultimatehub@gmail.com");
+}
+function openAuth(){document.getElementById("auth").classList.add("show")}
+function hideAuth(){document.getElementById("auth").classList.remove("show")}
+function toggleAuthMode(){
+  authMode=authMode==="login"?"signup":"login";
+  document.getElementById("authTitle").textContent=authMode==="login"?"Giriş yap":"Kayıt ol";
+  document.getElementById("authSubmit").textContent=authMode==="login"?"Giriş Yap":"Kayıt Ol";
+  document.getElementById("authName").classList.toggle("hidden",authMode==="login");
+}
+async function submitAuth(e){
+  e.preventDefault();
+  const r=authMode==="login"
+    ? await supabaseClient.auth.signInWithPassword({email:authEmail.value,password:authPassword.value})
+    : await supabaseClient.auth.signUp({email:authEmail.value,password:authPassword.value,options:{data:{display_name:authName.value}}});
+  authStatus.textContent=r.error?r.error.message:(authMode==="login"?"Giriş başarılı!":"Kayıt başarılı. E-postanı doğrula.");
+  if(!r.error && authMode==="login") hideAuth();
+}
+async function publish(e){
+  e.preventDefault();
+  if(!currentUser) return openAuth();
+  const r=await supabaseClient.from("scripts").insert({
+    title:pTitle.value,
+    slug:pTitle.value.toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-"+Date.now(),
+    game_name:pGame.value,
+    tags:pTags.value.split(",").map(x=>x.trim()).filter(Boolean),
+    description:"Topluluk tarafından yeni gönderildi.",
+    script_content:pCode.value,
+    author_id:currentUser.id,
+    status:"pending"
+  });
+  if(r.error) return alert(r.error.message);
+  e.target.reset();
+  await loadScriptsFromDB();
+  alert("Script gönderildi. Admin onayından sonra yayınlanacak.");
+}
+async function openAdmin(){
+  if(currentUser?.email?.toLowerCase()!=="mm2ultimatehub@gmail.com") return;
+  document.getElementById("admin").classList.add("show");
+  const r=await supabaseClient.from("scripts").select("*").order("created_at",{ascending:false});
+  if(r.error) return adminContent.textContent=r.error.message;
+  adminContent.innerHTML=(r.data||[]).map(s=>'<div class="admin-row"><div><b>'+esc(s.title)+'</b><div class="status">'+esc(s.status)+' · '+esc(s.game_name)+'</div></div>'+(s.status==="pending"?'<button class="primary" onclick="approveScript(\''+s.id+'\')">Onayla</button>':'')+'</div>').join("")||"Script yok.";
+}
+function hideAdmin(){document.getElementById("admin").classList.remove("show")}
+async function approveScript(id){await supabaseClient.from("scripts").update({status:"approved"}).eq("id",id);await openAdmin();await loadScriptsFromDB()}
+initScriptDepo();
